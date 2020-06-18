@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="QuanLyDoanVien" Class="LinqDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=DESKTOP-NA1SDU2\NHATANH;Initial Catalog=QuanLyDoanVien;Integrated Security=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="QuanLyDoanVienConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.DangKy" Member="DangKies">
+    <Type Name="DangKy">
+      <Column Name="IDDangKy" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="IDSuKien" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IDDoanVien" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="NgayDangKy" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="DoanVien_DangKy" Member="DoanVien" ThisKey="IDDoanVien" OtherKey="ID" Type="DoanVien" IsForeignKey="true" />
+      <Association Name="SuKien_DangKy" Member="SuKien" ThisKey="IDSuKien" OtherKey="ID" Type="SuKien" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.[User]" Member="Users">
+    <Type Name="User">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="HoTen" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="NgaySinh" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="GioiTinh" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UserName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Password" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.DoanVien" Member="DoanViens">
+    <Type Name="DoanVien">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="HoTen" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="NgaySinh" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="GioiTinh" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="NgayVaoDoan" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="DiaChi" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="SoDienThoai" Type="System.String" DbType="NChar(12)" CanBeNull="true" />
+      <Column Name="Email" Type="System.String" DbType="NChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Password" Type="System.String" DbType="NChar(100)" CanBeNull="true" />
+      <Column Name="NoiVaoDoan" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="MSSV" Type="System.String" DbType="NChar(10)" CanBeNull="true" />
+      <Column Name="XepLoai" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="NhanThucChinhTri" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="ChuyenMonNghiepVu" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="RenLuyenCaNhan" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="LaBiThu" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="DoanVien_DangKy" Member="DangKies" ThisKey="ID" OtherKey="IDDoanVien" Type="DangKy" />
+    </Type>
+  </Table>
+  <Table Name="dbo.SuKien" Member="SuKiens">
+    <Type Name="SuKien">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Ten" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="NoiDung" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="DiaDiem" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="BatDau" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="GhiChu" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Association Name="SuKien_DangKy" Member="DangKies" ThisKey="ID" OtherKey="IDSuKien" Type="DangKy" />
+    </Type>
+  </Table>
+  <Table Name="dbo.MuaAo" Member="MuaAos">
+    <Type Name="MuaAo">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="IDDoanVien" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SoLuong" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="NoiDung" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="NgayThang" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="TrangThai" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.DeXuat" Member="DeXuats">
+    <Type Name="DeXuat">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="IDDoanVien" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="NoiDung" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="NgayThang" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="Loai" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="NguoiDeXuat" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="TrangThai" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Function Name="dbo.DoanVien_Get_SuKien" Method="DoanVien_Get_SuKien">
+    <Parameter Name="IDDoanVien" Parameter="iDDoanVien" Type="System.Int32" DbType="Int" />
+    <ElementType Name="DoanVien_Get_SuKienResult">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Ten" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="NoiDung" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="DiaDiem" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="BatDau" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="GhiChu" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="TrangThai" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </ElementType>
+  </Function>
+</Database>

@@ -1,0 +1,166 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutStudent.cshtml";
+}
+
+<section class="content" ng-app="myApp" ng-controller="myCtrl">
+    <div class="box">
+        <div class="box-header with-border">
+            <h3 class="box-title">Thông tin cá nhân</h3>
+            <div class="box-tools pull-right">
+                <!-- Buttons, labels, and many other things can be placed here! -->
+                <!-- Here is a label for example -->
+                @* <button class="btn-primary btn"> Lưu thông tin</button>*@
+                <span class="label label-primary"></span>
+            </div>
+            <!-- /.box-tools -->
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+            <form>
+                <div class="form-row">                   
+                    <div class="form-group col-md-6">
+                        <label>Họ tên</label>
+                        <input enabled type="text" class="form-control" ng-model="HoTenEdit" id="HoTenEdit">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="DaNhan">Ngày sinh</label>
+                        <input enabled type="date" class="form-control" ng-model="NgaySinhEdit" id="NgaySinhEdit" />
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Giới tính</label>
+                        <select enabled class="form-control" ng-model="GioiTinhEdit" id="GioiTinhEdit">
+                            <option selected enabled value="">Chọn giới tính</option>
+                            <option value="Nữ">Nữ</option>
+                            <option value="Nam">Nam</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="DaNhan">Ngày vào đoàn</label>
+                        <input enabled type="date" ng-model="NgayVaoDoanEdit" class="form-control" id="NgayVaoDoanEdit" />
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Địa chỉ</label>
+                        <input enabled type="text" ng-model="DiaChiEdit" class="form-control" id="DiaChiEdit" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Số điện thoại</label>
+                        <input enabled type="text" ng-model="SoDienThoaiEdit" class="form-control" id="SoDienThoaiEdit" />
+                    </div>					
+					<div class="form-group col-md-6">
+                        <label>Nơi vào đoàn</label>
+                        <input enabled type="text" class="form-control" id="NoiVaoDoanEdit" />
+                    </div>                  
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>MSSV</label>
+                        <input disabled type="text" class="form-control" id="MSSVEdit" />
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Email</label>
+                        <input disabled type="email" ng-model="EmailEdit" class="form-control" id="EmailEdit" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Xếp loại</label>
+                        <select disabled id="XepLoaiEdit" class="form-control">
+                            <option value="0">Chưa xếp loại</option>
+                            <option value="1">Yếu kém</option>
+                            <option value="2">Trung bình</option>
+                            <option value="3">Khá</option>
+                            <option value="4">Xuất sắc</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Nhận thức chính trị, đạo đức, lối sống:</label>
+                        <input disabled type="number" class="form-control" id="NhanThucChinhTriEdit" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Rèn luyện về chuyên môn nghiệp vụ:</label>
+                        <input disabled type="number" class="form-control" id="ChuyenMonNghiepVuEdit" />
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Rèn luyện bản thân:</label>
+                        <input disabled type="number" class="form-control" id="RenLuyenCaNhanEdit" />
+                    </div>
+                </div>
+            </form>
+        </div>
+        <!-- /.box-body -->
+        <div class="box-footer">
+
+        </div>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+        <script>
+            var app = angular.module('myApp', []);
+            app.controller('myCtrl', function ($scope) {
+                $scope.username = "";
+                $scope.password = "";
+                angular.element(document).ready(function () {
+                    $.ajax({
+                        type: "GET",
+                        url: "/Student/GetInfor",
+                        dataType: "json",
+                        success: function (dt) {
+                            close_loading_screen();
+                            console.log(dt)
+                            $('#IDEdit').val(dt.ID);
+                            $('#HoTenEdit').val(dt.HoTen);
+                            //$('#NgaySinhEdit').val(data[2]);
+                            $('#GioiTinhEdit').val(dt.GioiTinh);
+                            //$('#NgayVaoDoanEdit').val(data[4]);
+                            $('#DiaChiEdit').val(dt.DiaChi);
+                            $('#SoDienThoaiEdit').val(dt.SoDienThoai);
+                            $('#EmailEdit').val(dt.Email);
+                            $('#XepLoaiEdit').val(dt.XepLoai);
+                            $('#NhanThucChinhTriEdit').val(dt.NhanThucChinhTri);
+                            $('#ChuyenMonNghiepVuEdit').val(dt.ChuyenMonNghiepVu);
+                            $('#RenLuyenCaNhanEdit').val(dt.RenLuyenCaNhan);
+                            $('#NoiVaoDoanEdit').val(dt.NoiVaoDoan);
+                            $('#MSSVEdit').val(dt.MSSV);
+                            setngay(dt.NgaySinh, dt.NgayVaoDoan)
+                        }
+                    });
+                });
+
+            });
+        </script>
+    </div>
+</section>
+<script src="/Content/bower_components/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="/Content/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- DataTables -->
+<script src="/Content/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="/Content/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<!-- SlimScroll -->
+<script src="/Content/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+<!-- FastClick -->
+<script src="/Content/bower_components/fastclick/lib/fastclick.js"></script>
+<script src="/Content/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script>
+
+    $(document).ready(function () {
+
+    });
+    function setngay(ns, nvd) {
+        var s = ns.split('/').join('-');
+        var t = nvd.split('/').join('-');
+        var date1 = s.split("-").reverse().join("-");
+        var date2 = t.split("-").reverse().join("-");
+        $("#NgaySinhEdit").val(date1);
+        $("#NgayVaoDoanEdit").val(date2);
+    }
+</script>

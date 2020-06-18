@@ -1,0 +1,118 @@
+﻿
+@{
+    ViewBag.Title = "MuaAo";
+    Layout = "~/Views/Shared/_LayoutStudent.cshtml";
+}
+
+<section class="content">
+    <div class="row" style="">
+        <div class="form-group row">
+            <div class="col-md-12">
+                <div class="box box-solid box-primary">
+                    <div class="box-header with-border ">
+                        <h3 class="box-title" style="margin-left:45%">Thông tin người mua</h3>
+                        <div class="box-tools pull-right">
+                            <!-- Collapse Button -->
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                <i class="fa fa-minus"></i>
+                            </button>
+                        </div>
+                        <!-- /.box-tools -->
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body ">
+                        <form role="form">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Tên đoàn viên:</label>
+                                        <input type="text" readonly class="form-control" id="Ten">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Email:</label>
+                                        <input type="text" readonly class="form-control" id="Email">
+                                    </div>
+                                </div>                                
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Số lượng áo:</label>
+                                        <input type="number" class="form-control" id="SoLuong">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Nội dung mua hàng:</label>
+                                        <input type="text" class="form-control" id="NoiDung">
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>   
+    <div class="center-block" style="text-align: center">
+        <button class="btn btn-danger" onclick="Send()">Lưu đơn hàng</button>
+    </div>
+</section>
+<script src="/Content/bower_components/jquery/dist/jquery.min.js"></script>
+<script>
+    function khoitao() {
+
+    }
+    $(document).ready(function () {
+        Load_thong_tin();
+    });
+    var ID;
+    function Load_thong_tin() {
+        $.ajax({
+            type: "POST",
+            url: "/Student/GetUser",
+            dataType: "json",
+            success: function (dt) {
+                console.log(dt)
+                ID = dt.ID;
+                $('#Ten').val(dt.HoTen);
+                $('#Email').val(dt.Email);
+            },
+            complete: function (data) {
+            },
+            error: function (err) {
+            }
+        });
+    }
+  
+    function Send() {
+        if ($('#SoLuong').val() == "" ) {
+            alert("Vui lòng nhập số lượng áo đặt mua");
+        } else {
+            $.ajax({
+                type: "POST",
+                url: "/Student/MuaAoAdd",
+                dataType: "json",
+                data: {
+                    'IDDoanVien': ID,
+                    'SoLuong': $('#SoLuong').val(),
+                    'NoiDung': $('#NoiDung').val()
+                },
+                success: function (dt) {
+                    alert(dt.Message)
+                        $('#SoLuong').val('');
+                        $('#NoiDung').val('');
+                   
+                   
+                },
+                complete: function (data) {
+
+                },
+                error: function (err) {
+                }
+            });
+        }
+    }
+</script>

@@ -1,0 +1,170 @@
+﻿
+@{
+    ViewBag.Title = "DuyetMuaAo";
+    Layout = "~/Views/Shared/_LayoutStudent.cshtml";
+}
+
+
+<section class="content">
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/Admin/Index">Trang chủ</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Duyệt đơn đặt mua áo</li>
+        </ol>
+    </nav>
+    <div class="box">
+        <div class="box-body">
+            <button id="btnaddnews" onclick="" class="btn btn-primary" data-toggle="modal" data-target="#Add" style="float:right ; margin-top: 18px; margin-right:18px; margin-bottom:6px"><i class="fas fa-plus"></i> Thêm mới</button>
+            <table id="maintable" class="table table-striped table-hover" style="width:100%;z-index: -1"></table>
+        </div>
+    </div> 
+</section>
+<script src="/Content/bower_components/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="/Content/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- DataTables -->
+<script src="/Content/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="/Content/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<!-- SlimScroll -->
+<script src="/Content/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+<!-- FastClick -->
+<script src="/Content/bower_components/fastclick/lib/fastclick.js"></script>
+<script src="/Content/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+<script>
+    var DangKys;
+    var SanPham;
+    var SelectID;
+    function ListAll() {
+        $.ajax({
+            type: "GET",
+            url: "/Student/GetAllMuaAo",
+            dataType: "json",
+            success: function (dt) {
+                for (var i = 0; i < dt.length; i++) {
+                    if (dt[i].TrangThai == 1) { dt[i].TrangThai = "Chờ xác nhận" };
+                    if (dt[i].TrangThai == 2) { dt[i].TrangThai = "Đã xác nhận" };
+                    if (dt[i].TrangThai == 3) { dt[i].TrangThai = "Từ chối" };
+                }
+                document.getElementById("maintable").innerHTML = "";
+                filldata('maintable', dt);
+            },
+            complete: function (data) {
+
+            },
+            error: function (err) {
+            }
+        });
+
+    } 
+    $(document).ready(function () {
+        ListAll();
+    });
+    function filldata(table_id, data) {
+        var dataSet = new Array;
+        $.each(data,
+            function (index, value) {
+                var tempArray = new Array;
+                for (var o in value) {
+                    tempArray.push(value[o]);
+                }
+                dataSet.push(tempArray);
+            });
+        tabledt = $('#' + table_id + '').removeAttr('width').DataTable({
+            select: true,
+            "destroy": true,
+            data: dataSet,
+
+            "oLanguage": {
+
+                "sProcessing": "Đang xử lý...",
+                "sLengthMenu": "Xem _MENU_ mục",
+                "sZeroRecords": "Không tìm thấy dòng nào phù hợp",
+                "sInfo": "Đang xem _START_ đến _END_ trong tổng số _TOTAL_ mục",
+                "sInfoEmpty": "Đang xem 0 đến 0 trong tổng số 0 mục",
+                "sInfoFiltered": "(được lọc từ _MAX_ mục)",
+                "sInfoPostFix": "",
+                "sSearch": "Tìm:",
+                "sUrl": "",
+                "oPaginate": {
+                    "sFirst": "Đầu",
+                    "sPrevious": "Trước",
+                    "sNext": "Tiếp",
+                    "sLast": "Cuối"
+
+                }
+            },
+            columns: [
+                { title: "ID", visible: false },
+                { title: "ID đoàn viên",visible:false },
+                { title: "Họ tên " },
+                { title: "Số lượng mua" },
+                { title: "Nội dung" },
+                { title: "Ngày tháng", },
+                { title: "Trạng thái", },
+                { title: "Tác vụ", "width": "12%" },
+                //{ title: "Tài khoản sửa", "visible": false },
+                //{ title: "Ngày sửa", "visible": false },
+
+            ],
+            "columnDefs": [
+                {
+                    "targets": -1,
+                    "data": null,
+                    "defaultContent": "<a id=" + "viewct>" + "<i class=" + "'fas fa-check'" + "></i>" + "<span> &ensp;</span></a>"
+                        + "<a id=" + "xoact" + " >" + " <i class= " + "'fas fa-trash-alt'" + " ></i> " + "</a> " + "<span> &ensp;</span></a>"
+
+                }],
+            "order": [[0, "desc"]]
+        });
+        $('#' + table_id + ' tbody').on('click', '#viewct', function () {
+            var data = tabledt.row($(this).parents('tr')).data();
+            var r = confirm("Duyệt phiếu đăng ký !")
+            if (r) {
+                if (data[6]!= "Chờ xác nhận") {
+                    alert("Phiếu đã xử lý rồi")
+                } else {
+                    Update(data[0], 2);
+                }
+               
+            }
+        });        
+        $('#' + table_id + ' tbody').on('click', '#xoact', function () {
+            var data = tabledt.row($(this).parents('tr')).data();
+            var r = confirm("Từ chối phiếu đăng ký !")
+            if (r) {
+                if (data[6]!= "Chờ xác nhận") {
+                    alert("Phiếu đã xử lý rồi")
+                } else {
+                    Update(data[0], 3);
+                }
+            }
+        });
+
+    };    
+    function Update(ID, TrangThai) {
+        open_loading_screen();
+        $.ajax({
+            type: "POST",
+            url: "/Student/DuyetMuaAoAdd",
+            dataType: "json",
+            data: {
+                'ID': ID,
+                'TrangThai': TrangThai
+            },
+            success: function (data) {
+                close_loading_screen();
+                alert(data.Message);
+                    ListAll();
+            },
+            error: function (err) {
+                close_loading_screen();
+                alert('Lỗi kết nối');
+
+            }
+        });
+    }
+   
+</script>
+

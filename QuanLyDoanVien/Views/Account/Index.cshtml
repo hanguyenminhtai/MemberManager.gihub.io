@@ -1,0 +1,918 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <title>Đăng nhập hệ thống</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--===============================================================================================-->
+    <link rel="icon" type="image/png" href="/Content/Login/images/icons/favicon.ico" />
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="/Content/Login/vendor/bootstrap/css/bootstrap.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="/Content/Login/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="/Content/Login/fonts/iconic/css/material-design-iconic-font.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="/Content/Login/vendor/animate/animate.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="/Content/Login/vendor/css-hamburgers/hamburgers.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="/Content/Login/vendor/animsition/css/animsition.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="/Content/Login/vendor/select2/select2.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="/Content/Login/vendor/daterangepicker/daterangepicker.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="/Content/Login/css/util.css">
+    <link rel="stylesheet" type="text/css" href="/Content/Login/css/main.css">
+    <!--===============================================================================================-->
+    <style>
+        .loader {
+            border: 6px solid #f3f3f3; /* Light grey */
+            border-top: 6px solid #3498db; /* Blue */
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @@keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+
+
+</head>
+<body ng-app="myApp" ng-controller="myCtrl">
+    <div class="modal" data-backdrop="static" data-keyboard="false" id="loadingmodal">
+        <div class="modal-dialog modal-sm ">
+            <div class="modal-content">
+                <div class="modal-body" align="center">
+
+                    <svg class="ldi-f4h0o3" width="200px" height="200px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" style="background: none;">
+                        <!--?xml version="1.0" encoding="utf-8"?--><!--Generator: Adobe Illustrator 21.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)-->
+                        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 100 100" style="transform-origin: 50px 50px 0px;" xml:space="preserve"><g style="transform-origin: 50px 50px 0px;"><g style="transform-origin: 50px 50px 0px; transform: scale(0.6);"><g style="transform-origin: 50px 50px 0px;">
+<g>
+<style type="text/css" class="ld ld-breath" style="transform-origin: 50px 50px 0px; animation-duration: 1s; animation-delay: -1s; animation-direction: normal;">
+    .st0 {
+        fill: url(#SVGID_1_);
+    }
+
+    .st1 {
+        fill: #4C96D1;
+    }
+
+    .st2 {
+        fill: #E8D556;
+    }
+
+    .st3 {
+        fill: #CF375B;
+    }
+
+    .st4 {
+        fill: #3B82C4;
+    }
+
+    .st5 {
+        fill: #236CB5;
+    }
+
+    .st6 {
+        fill: #D8B234;
+    }
+
+    .st7 {
+        fill: #1987C9;
+    }
+
+    .st8 {
+        fill: #2C98D4;
+    }
+
+    .st9 {
+        fill: #459FD1;
+    }
+
+    .st10 {
+        fill: #42B262;
+    }
+
+    .st11 {
+        fill: #000101;
+    }
+
+    .st12 {
+        fill: #653512;
+    }
+
+    .st13 {
+        fill: #15A260;
+    }
+
+    .st14 {
+        fill: #E42C91;
+    }
+
+    .st15 {
+        fill: #4873B8;
+    }
+
+    .st16 {
+        fill: #04A860;
+    }
+
+    .st17 {
+        fill: #FFCF65;
+    }
+
+    .st18 {
+        fill: #F3B41A;
+    }
+
+    .st19 {
+        fill: #DC4E40;
+    }
+
+    .st20 {
+        fill: #3E3E3E;
+    }
+
+    .st21 {
+        fill: #1CB360;
+    }
+
+    .st22 {
+        fill: #4E84C4;
+    }
+
+    .st23 {
+        fill: #87C540;
+    }
+
+    .st24 {
+        fill: #FFFFFF;
+    }
+
+    .st25 {
+        fill: #1E5281;
+    }
+
+    .st26 {
+        fill: #9FC93B;
+    }
+
+    .st27 {
+        fill: #F4811F;
+    }
+
+    .st28 {
+        fill: #4AA847;
+    }
+
+    .st29 {
+        fill: #176CB6;
+    }
+
+    .st30 {
+        fill: #FEFFFF;
+    }
+
+    .st31 {
+        fill: #323232;
+    }
+
+    .st32 {
+        fill: #BA1F24;
+    }
+
+    .st33 {
+        fill: #1B3461;
+    }
+
+    .st34 {
+        fill: #508BC1;
+    }
+
+    .st35 {
+        fill: #E64626;
+    }
+
+    .st36 {
+        fill: #F0A146;
+    }
+
+    .st37 {
+        fill: #79B947;
+    }
+
+    .st38 {
+        fill: #973D97;
+    }
+
+    .st39 {
+        fill: #3CB0E5;
+    }
+
+    .st40 {
+        fill: #F36E29;
+    }
+
+    .st41 {
+        fill: #37926B;
+    }
+
+    .st42 {
+        fill: #99B03F;
+    }
+
+    .st43 {
+        fill: #44B763;
+    }
+
+    .st44 {
+        fill: #65BC45;
+    }
+
+    .st45 {
+        fill: #ED523F;
+    }
+
+    .st46 {
+        fill: #B01E23;
+    }
+
+    .st47 {
+        fill: #9A2C34;
+    }
+
+    .st48 {
+        fill: #B03B7D;
+    }
+
+    .st49 {
+        fill: #EEBE1F;
+    }
+
+    .st50 {
+        fill: #3E489E;
+    }
+
+    .st51 {
+        fill: #CB8A3E;
+    }
+
+    .st52 {
+        fill: #3B8FB4;
+    }
+
+    .st53 {
+        fill: #8CB03E;
+    }
+
+    .st54 {
+        fill: #1D93CF;
+    }
+
+    .st55 {
+        fill: #163760;
+    }
+
+    .st56 {
+        fill: #C42530;
+    }
+
+    .st57 {
+        fill: #D4252D;
+    }
+
+    .st58 {
+        fill: #E76229;
+    }
+
+    .st59 {
+        fill: #D24F4E;
+    }
+
+    .st60 {
+        fill: #ED2123;
+    }
+
+    .st61 {
+        fill: #2C9AD6;
+    }
+
+    .st62 {
+        fill: #F5B51C;
+    }
+
+    .st63 {
+        fill: #E55227;
+    }
+
+    .st64 {
+        fill: #7CB341;
+    }
+
+    .st65 {
+        fill: #9D3538;
+    }
+
+    .st66 {
+        fill: #236F44;
+    }
+
+    .st67 {
+        fill: #672C91;
+    }
+
+    .st68 {
+        fill: #2971B9;
+    }
+
+    .st69 {
+        fill: #C84728;
+    }
+
+    .st70 {
+        fill: #2A5391;
+    }
+
+    .st71 {
+        fill: #5ABA48;
+    }
+
+    .st72 {
+        fill: #42B6DA;
+    }
+
+    .st73 {
+        fill: #F26721;
+    }
+
+    .st74 {
+        fill: #4C4C4C;
+    }
+
+    .st75 {
+        fill: #02603D;
+    }
+
+    .st76 {
+        fill: #D72026;
+    }
+
+    .st77 {
+        fill: #D81F26;
+    }
+
+    .st78 {
+        fill: #F7BB16;
+    }
+
+    .st79 {
+        fill: #EA4434;
+    }
+
+    .st80 {
+        fill: #34A850;
+    }
+
+    .st81 {
+        fill: #547EC0;
+    }
+
+    .st82 {
+        fill: #FFC820;
+    }
+
+    .st83 {
+        fill: #F47C1F;
+    }
+
+    .st84 {
+        fill: url(#SVGID_2_);
+    }
+
+    .st85 {
+        fill: url(#SVGID_3_);
+    }
+
+    .st86 {
+        fill: url(#SVGID_4_);
+    }
+
+    .st87 {
+        fill: url(#SVGID_5_);
+    }
+
+    .st88 {
+        opacity: 0.2;
+        fill: #000101;
+        enable-background: new;
+    }
+
+    .st89 {
+        opacity: 0.12;
+        fill: #000101;
+        enable-background: new;
+    }
+
+    .st90 {
+        opacity: 0.25;
+        fill: #FFFFFF;
+        enable-background: new;
+    }
+
+    .st91 {
+        fill: none;
+        stroke: #E42C91;
+        stroke-width: 4;
+        stroke-miterlimit: 10;
+    }
+
+    .st92 {
+        fill: none;
+        stroke: #E42C91;
+        stroke-width: 4;
+        stroke-linecap: round;
+        stroke-miterlimit: 10;
+    }
+
+    .st93 {
+        fill: #F04B4C;
+    }
+
+    .st94 {
+        fill: #472D8B;
+    }
+
+    .st95 {
+        fill: #E4F2FC;
+    }
+
+    .st96 {
+        fill: #7AC144;
+    }
+
+    .st97 {
+        fill: #E44E25;
+    }
+
+    .st98 {
+        fill: #F16729;
+    }
+
+    .st99 {
+        fill: #EBEBEB;
+    }
+
+    .st100 {
+        fill: #31322F;
+    }
+
+    .st101 {
+        fill: #E7EAE8;
+    }
+
+    .st102 {
+        fill: #EDD3B6;
+    }
+
+    .st103 {
+        fill: #CA3B34;
+    }
+
+    .st104 {
+        fill: #324F5E;
+    }
+
+    .st105 {
+        fill: #29221E;
+    }
+
+    .st106 {
+        fill: #7FABBE;
+    }
+
+    .st107 {
+        fill: none;
+    }
+
+    .st108 {
+        fill: #378D69;
+    }
+
+    .st109 {
+        fill: #ED2223;
+    }
+
+    .st110 {
+        fill: #E35F2F;
+    }
+
+    .st111 {
+        fill: #E79979;
+    }
+
+    .st112 {
+        fill: #3786A8;
+    }
+
+    .st113 {
+        fill: #6CBE44;
+    }
+
+    .st114 {
+        fill: #28B04A;
+    }
+
+    .st115 {
+        fill: #1072AB;
+    }
+
+    .st116 {
+        fill: #E7BD38;
+    }
+
+    .st117 {
+        fill: #170908;
+    }
+
+    .st118 {
+        fill: #28A7DA;
+    }
+
+    .st119 {
+        fill: #10354A;
+    }
+
+    .st120 {
+        fill: #674C46;
+    }
+
+    .st121 {
+        fill: #F3DAB9;
+    }
+
+    .st122 {
+        fill: #1B82B5;
+    }
+
+    .st123 {
+        fill: #4EB0D7;
+    }
+
+    .st124 {
+        fill: #F6CC57;
+    }
+
+    .st125 {
+        fill: #11202F;
+    }
+
+    .st126 {
+        fill: #E5BC8D;
+    }
+
+    .st127 {
+        fill: #997256;
+    }
+
+    .st128 {
+        fill: #DD1E26;
+    }
+
+    .st129 {
+        fill: #EE9B27;
+    }
+
+    .st130 {
+        fill: #F16121;
+    }
+
+    .st131 {
+        fill: #4492CF;
+    }
+
+    .st132 {
+        fill: #DF2841;
+    }
+
+    .st133 {
+        fill: #3F77BC;
+    }
+
+    .st134 {
+        fill: #F5C22A;
+    }
+
+    .st135 {
+        fill: #141414;
+    }
+
+    .st136 {
+        fill: #C78A2A;
+    }
+
+    .st137 {
+        fill: #DA972D;
+    }
+
+    .st138 {
+        fill: #F4AE35;
+    }
+
+    .st139 {
+        fill: #1D9045;
+    }
+
+    .st140 {
+        fill: #CC2628;
+    }
+
+    .st141 {
+        fill: #679B62;
+    }
+
+    .st142 {
+        fill: #C13A37;
+    }
+
+    .st143 {
+        fill: #4F5056;
+    }
+
+    .st144 {
+        fill: #EFEFEF;
+    }
+
+    .st145 {
+        fill: #EB8028;
+    }
+
+    .st146 {
+        fill: #174AA0;
+    }
+
+    .st147 {
+        fill: #E92830;
+    }
+
+    .st148 {
+        fill: #F04F4D;
+    }
+</style><g class="ld ld-breath" style="transform-origin: 50px 50px 0px; animation-duration: 1s; animation-delay: -0.928571s; animation-direction: normal;"><rect x="10" y="51.981" class="st61" width="38.02" height="38.025" fill="#17840b" style="fill: rgb(23, 132, 11);"></rect></g><g class="ld ld-breath" style="transform-origin: 50px 50px 0px; animation-duration: 1s; animation-delay: -0.857143s; animation-direction: normal;"><rect x="51.98" y="51.981" class="st62" width="38.02" height="38.025" fill="#eac431" style="fill: rgb(234, 196, 49);"></rect></g><g class="ld ld-breath" style="transform-origin: 50px 50px 0px; animation-duration: 1s; animation-delay: -0.785714s; animation-direction: normal;"><polygon class="st63" points="48.02,48.006 10,48.006 10,9.996 48.02,9.996 48.02,48.021 " fill="#f13600" style="fill: rgb(241, 54, 0);"></polygon></g><g class="ld ld-breath" style="transform-origin: 50px 50px 0px; animation-duration: 1s; animation-delay: -0.714286s; animation-direction: normal;"><polygon class="st64" points="90,48.006 51.98,48.006 51.98,9.996 90,9.996 90,48.021 " fill="#6ecc09" style="fill: rgb(110, 204, 9);"></polygon></g>
+<metadata xmlns:d="https://loading.io/stock/" class="ld ld-breath" style="transform-origin: 50px 50px 0px; animation-duration: 1s; animation-delay: -0.642857s; animation-direction: normal;">
+                        <d:name class="ld ld-breath" style="transform-origin: 50px 50px 0px; animation-duration: 1s; animation-delay: -0.571429s; animation-direction: normal;">microsoft</d:name>
+                        <d:tags class="ld ld-breath" style="transform-origin: 50px 50px 0px; animation-duration: 1s; animation-delay: -0.5s; animation-direction: normal;">microsoft,brand</d:tags>
+                        <d:license class="ld ld-breath" style="transform-origin: 50px 50px 0px; animation-duration: 1s; animation-delay: -0.428571s; animation-direction: normal;">cc0</d:license>
+                        <d:slug class="ld ld-breath" style="transform-origin: 50px 50px 0px; animation-duration: 1s; animation-delay: -0.357143s; animation-direction: normal;">f4h0o3</d:slug>
+</metadata></g>
+</g></g></g>
+<style type="text/css" class="ld ld-breath" style="transform-origin: 50px 50px 0px; animation-duration: 1s; animation-delay: -0.285714s; animation-direction: normal;">
+    @@keyframes ld-breath {
+        0% {
+            -webkit-transform: scale(0.86);
+            transform: scale(0.86);
+        }
+
+        50% {
+            -webkit-transform: scale(1.06);
+            transform: scale(1.06);
+        }
+
+        100% {
+            -webkit-transform: scale(0.86);
+            transform: scale(0.86);
+        }
+    }
+
+    @@-webkit-keyframes ld-breath {
+        0% {
+            -webkit-transform: scale(0.86);
+            transform: scale(0.86);
+        }
+
+        50% {
+            -webkit-transform: scale(1.06);
+            transform: scale(1.06);
+        }
+
+        100% {
+            -webkit-transform: scale(0.86);
+            transform: scale(0.86);
+        }
+    }
+
+    .ld.ld-breath {
+        -webkit-animation: ld-breath 1s infinite;
+        animation: ld-breath 1s infinite;
+    }
+</style></svg>
+                    </svg>
+                    <p>Đang kết nối</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ui loading raised segment" id="body_l">
+        <div class="limiter">
+            <div class="container-login100" style="background-image: url('/Content/dist/img/1479138706_a690af295e202a5c2adb9ba4b725b48f.38937.jpeg');">
+                <div class="wrap-login100" style="opacity:0.9">
+                    <form class="login100-form validate-form">
+
+                        @*<img src="~/Content/dist/img/01.png"  style="width: 100%; margin-left:-8%" />*@
+
+
+                        <span class="login100-form-title p-b-34 p-t-27">
+                            Quản lý đoàn viên
+                        </span>
+
+                        <div class="wrap-input100 validate-input" data-validate="Nhập tài khoản">
+                            <input class="input100" id="usr" type="text" ng-model="username" name="username" placeholder="Tài khoản">
+                            <span class="focus-input100" data-placeholder="&#xf207;"></span>
+                        </div>
+                        <div class="wrap-input100 validate-input" data-validate="Nhập mật khẩu">
+                            <input class="input100" id="pwd" ng-model="password" type="password" name="pass" placeholder="Mật khẩu">
+                            <span class="focus-input100" data-placeholder="&#xf191;"></span>
+                        </div>
+
+
+                        <div class="container-login100-form-btn">
+                            <button class="login100-form-btn" type="button" ng-click="DangNhap()">
+                                Đăng nhập
+                            </button>
+                        </div>
+                        <div class="text-center p-t-90">
+                            <a href="https://www.facebook.com/profile.php?id=100022582337208">Phần mềm được phát triển bởi <b>Nhóm HTTH</b></a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" data-backdrop="static" data-keyboard="false" id="GetPassWord">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <form role="form">
+                        <div class="form-group">
+                            <label class="control-label" for="inputSuccess"> Tài khoản đăng nhập:</label>
+                            <input type="text" class="form-control" id="taikhoan" placeholder="Nhập tài khoản hiện tại của bạn">
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="inputSuccess">Địa chỉ email:</label>
+                            <input type="text" class="form-control" id="email" placeholder="Nhập địa chỉ email mà bạn đã đăng ký">
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="capmatkhau()">Cấp lại mật khẩu</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Đóng</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <script>
+        var app = angular.module('myApp', []);
+        app.controller('myCtrl', function ($scope) {
+            $scope.username = "";
+            $scope.password = "";
+            $scope.DangNhap = function () {
+                dangnhap($scope.username, $scope.password);
+            }
+        });
+    </script>
+    <script src="/Content/bower_components/jquery/dist/jquery.min.js"></script>
+
+    <script src="/Content/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script>
+    function close_loading_screen() {
+        $('#loadingmodal').modal('hide');
+    }
+
+    function open_loading_screen() {
+        $('#loadingmodal').modal('show');
+    }
+
+    function capmatkhau() {
+
+        var email = $('#email').val();
+        var taikhoan = $('#taikhoan').val();
+        if (email == "" || taikhoan == "") {
+            alert("Bạn cần nhập đầy đủ thông tin!");
+        } else {
+            var r = confirm(
+                "Bạn có muốn chúng tôi thay đổi mật khẩu hiện tại và gửi mật khẩu mới đến địa chỉ email mà bạn đã đăng ký với chúng tôi?")
+            if (r) {
+                $.ajax({
+                    type: "POST",
+                    url: "/Account/GetPassWordCanBo",
+                    data: {
+                        'UserName': taikhoan,
+                        'EmailAdress': email
+                    },
+                    success: function(data) {
+                        alert(data.Message);
+                    }
+                });
+
+            };
+        }
+    }
+    function test(dt) {
+            alert(dt);
+    }
+    function dangnhap(usr,pwd) {
+        //var usr = $('#usr').val();
+        //var pwd = $('#pwd').val();
+        if (usr == "" || pwd == "") {
+            alert("Bạn cần nhập đầy đủ thông tin đăng nhập");
+        } else {
+            open_loading_screen();
+            $.ajax({
+                type: "POST",
+                url: "/Account/LoginUser",
+                dataType: "json",
+                data: { 'UserName': usr, 'UserPassword': pwd },
+                success: function(data) {
+                    close_loading_screen();
+                    if (data.Status!=1) {
+                        alert(data.Message);
+                    } else {
+                        window.location.href = "@Url.Action("SinhVien", "Admin")";
+                    }
+                },
+                error: function(err) {
+                    close_loading_screen();
+                    alert('Lỗi kết nối');
+
+                }
+            });
+            document.getElementById("body_l").classList.remove("loading");
+        }
+    }
+
+    var dn = document.getElementById("pwd");
+    dn.addEventListener("keyup",
+        function(event) {
+            event.preventDefault();
+            if (event.keyCode === 13) {
+                var usr = $('#usr').val();
+                var pwd = $('#pwd').val();
+                dangnhap(usr,pwd);
+            }
+
+        });
+
+
+    var dn1 = document.getElementById("usr");
+    dn1.addEventListener("keyup",
+        function(event) {
+            event.preventDefault();
+            if (event.keyCode === 13) {
+                var usr = $('#usr').val();
+                var pwd = $('#pwd').val();
+                dangnhap(usr, pwd);
+            }
+        });
+    </script>
+
+    <div id="dropDownSelect1"></div>
+
+    <!--===============================================================================================-->
+    <script src="/Content/Login/vendor/jquery/jquery-3.2.1.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="/Content/Login/vendor/animsition/js/animsition.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="/Content/Login/vendor/bootstrap/js/popper.js"></script>
+    <script src="/Content/Login/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="/Content/Login/vendor/select2/select2.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="/Content/Login/vendor/daterangepicker/moment.min.js"></script>
+    <script src="/Content/Login/vendor/daterangepicker/daterangepicker.js"></script>
+    <!--===============================================================================================-->
+    <script src="/Content/Login/vendor/countdowntime/countdowntime.js"></script>
+    <!--===============================================================================================-->
+    <script src="/Content/Login/js/main.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,643 @@
+﻿
+@{
+    ViewBag.Title = "SinhVien";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .greenclass {
+        background-color: darkseagreen !important
+    }
+
+    .orangeclass {
+        background-color: #FFE4C4 !important
+    }
+
+    .redclass {
+        background-color: #FA8072 !important
+    }
+</style>
+<section class="content">
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/Admin/Index">Trang chủ</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Danh sách đoàn viên</li>
+        </ol>
+    </nav>
+    <div class="box">
+        <div class="box-body">
+            @*<button onclick="Huy()" class="btn btn-warning" style="float:right ; margin-top: 18px; margin-right:18px; margin-bottom:6px"><i class="far fa-window-close"></i> Hủy đăng ký</button>
+                <button id="btnTraCuu" data-toggle="modal" data-target="#TraCuu" class="btn btn-primary" style="float:right ; margin-top: 18px; margin-right:18px; margin-bottom:6px"><i class="fas fa-search"></i> Tra cứu</button>*@
+            <button onclick="Export()" class="btn btn-primary" style="float:right ; margin-top: 18px; margin-right:18px; margin-bottom:6px"><i class="far fa-file-excel"></i> Xuất excel</button>
+            <button id="btnaddnews" onclick="" class="btn btn-primary" data-toggle="modal" data-target="#AddData" style="float:right ; margin-top: 18px; margin-right:18px; margin-bottom:6px"><i class="fas fa-plus"></i> Thêm đoàn viên</button>
+            <button id="btnimport" onclick="" class="btn btn-primary" data-toggle="modal" data-target="#Import" style="float:right ; margin-top: 18px; margin-right:18px; margin-bottom:6px"><i class="far fa-file-excel"></i> Import excel</button>
+            <table id="maintable" class="table table-striped table-hover" style="width:100%;z-index: -1"></table>
+        </div>
+    </div>
+    <div class="modal " data-backdrop="static" tabindex="999" data-keyboard="false" id="AddData" style="overflow-y:scroll;">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Nhập thông tin đoàn viên</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label>Họ tên</label>
+                                <input type="text" class="form-control" id="HoTenAdd">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="DaNhan">Ngày sinh</label>
+                                <input type="date" class="form-control" id="NgaySinhAdd" />
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Giới tính</label>
+                                <select class="form-control" id="GioiTinhAdd">
+                                    <option selected disabled value="">Chọn giới tính</option>
+                                    <option value="Nữ">Nữ</option>
+                                    <option value="Nam">Nam</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="DaNhan">Ngày vào đoàn</label>
+                                <input type="date" class="form-control" id="NgayVaoDoanAdd" />
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Địa chỉ</label>
+                                <input type="text" class="form-control" id="DiaChiAdd" />
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label>Số điện thoại</label>
+                                <input type="text" class="form-control" id="SoDienThoaiAdd" />
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Email</label>
+                                <input type="email" class="form-control" id="EmailAdd" />
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label>MSSV</label>
+                                <input type="text" class="form-control" id="MSSVAdd" />
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Nơi vào đoàn</label>
+                                <input type="text" class="form-control" id="NoiVaoDoanAdd" />
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label>Xếp loại tự động</label>
+                                <select id="XepLoaiAdd" disabled class="form-control">
+                                    <option value="0">Chưa xếp loại</option>
+                                    <option value="1">Yếu kém</option>
+                                    <option value="2">Trung bình</option>
+                                    <option value="3">Khá</option>
+                                    <option value="4">Xuất sắc</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Nhận thức chính trị, đạo đức, lối sống:</label>
+                                <input type="number" class="form-control" id="NhanThucChinhTriAdd" />
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label>Rèn luyện về chuyên môn nghiệp vụ:</label>
+                                <input type="number" class="form-control" id="ChuyenMonNghiepVuAdd" />
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Rèn luyện bản thân:</label>
+                                <input type="number" class="form-control" id="RenLuyenCaNhanAdd" />
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label>Là bí thư:</label>
+                                <input type="checkbox" style="margin-top:5px;margin-left:5px" id="BiThuAdd" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" onclick="Add()" class="btn btn-primary">Lưu</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal " data-backdrop="static" tabindex="999" data-keyboard="false" id="Import" style="overflow-y:scroll;">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Chọn file excel</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form role="form" style="margin-top:5%">
+                        <div class="form-group row">
+                            <label for="staticEmail" class="col-sm-3 col-form-label" style="text-align:right">File mẫu:</label>
+                            <div class="col-md-4">
+                                <a id="fileattack12" target="_blank">Xem file</a>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="staticEmail" class="col-sm-3 col-form-label" style="text-align:right">Chọn file:</label>
+                            <div class="col-md-8">
+                                <input type="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" class="form-control" id="fileUpload">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="staticEmail" class="col-sm-12 col-form-label" style="text-align:right"></label>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-primary" onclick="Upload()">Chuyển dữ liệu</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal " data-backdrop="static" tabindex="999" data-keyboard="false" id="EditData" style="overflow-y:scroll;">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Cập nhật thông tin đoàn viên</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label>ID đoàn viên</label>
+                                <input type="text" readonly class="form-control" id="IDEdit">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Họ tên</label>
+                                <input type="text" class="form-control" id="HoTenEdit">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="DaNhan">Ngày sinh</label>
+                                <input type="date" class="form-control" id="NgaySinhEdit" />
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Giới tính</label>
+                                <select class="form-control" id="GioiTinhEdit">
+                                    <option selected disabled value="">Chọn giới tính</option>
+                                    <option value="Nữ">Nữ</option>
+                                    <option value="Nam">Nam</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="DaNhan">Ngày vào đoàn</label>
+                                <input type="date" class="form-control" id="NgayVaoDoanEdit" />
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Địa chỉ</label>
+                                <input type="text" class="form-control" id="DiaChiEdit" />
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label>Số điện thoại</label>
+                                <input type="text" class="form-control" id="SoDienThoaiEdit" />
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Email</label>
+                                <input type="email" class="form-control" id="EmailEdit" />
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label>MSSV</label>
+                                <input type="text" class="form-control" id="MSSVEdit" />
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Nơi vào đoàn</label>
+                                <input type="text" class="form-control" id="NoiVaoDoanEdit" />
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label>Xếp loại</label>
+                                <select id="XepLoaiEdit" class="form-control">
+                                    <option value="0">Chưa xếp loại</option>
+                                    <option value="1">Yếu kém</option>
+                                    <option value="2">Trung bình</option>
+                                    <option value="3">Khá</option>
+                                    <option value="4">Xuất sắc</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Nhận thức chính trị, đạo đức, lối sống:</label>
+                                <input type="number" class="form-control" id="NhanThucChinhTriEdit" />
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label>Rèn luyện về chuyên môn nghiệp vụ:</label>
+                                <input type="number" class="form-control" id="ChuyenMonNghiepVuEdit" />
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Rèn luyện bản thân:</label>
+                                <input type="number" class="form-control" id="RenLuyenCaNhanEdit" />
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label>Là bí thư:</label>
+                                <input type="checkbox" style="margin-top:5px;margin-left:5px" id="BiThuEdit" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" onclick="Edit()" class="btn btn-primary">Lưu thông tin</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="/Content/bower_components/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="/Content/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- DataTables -->
+<script src="/Content/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="/Content/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<!-- SlimScroll -->
+<script src="/Content/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+<!-- FastClick -->
+<script src="/Content/bower_components/fastclick/lib/fastclick.js"></script>
+<script src="/Content/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.13.5/xlsx.full.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.13.5/jszip.js"></script>
+<script>
+    var DoanViens;
+    $(document).ready(function () {
+        ListAll();
+        $("#fileattack12").attr("href", "/Mau/Mau_import_excel.xlsx");
+        $("#fileattack12").html('Mau_import_excel.xlsx');
+    });
+    function ListAll() {
+        $.ajax({
+            type: "GET",
+            url: "/Admin/DoanVien_GetAll",
+            dataType: "json",
+            success: function (dt) {
+                document.getElementById("maintable").innerHTML = "";
+                DoanViens = dt;
+                filldata('maintable', DoanViens);
+            },
+            complete: function (data) {
+
+            },
+            error: function (err) {
+            }
+        });
+    }
+    function filldata(table_id, data) {
+        var dataSet = new Array;
+        $.each(data,
+            function (index, value) {
+                var tempArray = new Array;
+                for (var o in value) {
+                    tempArray.push(value[o]);
+                }
+                dataSet.push(tempArray);
+            });
+        tabledt = $('#' + table_id + '').removeAttr('width').DataTable({
+            select: true,
+            "destroy": true,
+            data: dataSet,
+            "scrollX": true,
+
+            "oLanguage": {
+
+                "sProcessing": "Đang xử lý...",
+                "sLengthMenu": "Xem _MENU_ mục",
+                "sZeroRecords": "Không tìm thấy dòng nào phù hợp",
+                "sInfo": "Đang xem _START_ đến _END_ trong tổng số _TOTAL_ mục",
+                "sInfoEmpty": "Đang xem 0 đến 0 trong tổng số 0 mục",
+                "sInfoFiltered": "(được lọc từ _MAX_ mục)",
+                "sInfoPostFix": "",
+                "sSearch": "Tìm:",
+                "sUrl": "",
+                "oPaginate": {
+                    "sFirst": "Đầu",
+                    "sPrevious": "Trước",
+                    "sNext": "Tiếp",
+                    "sLast": "Cuối"
+
+                }
+            },
+            columns: [
+                { title: "ID" },
+                { title: "Họ tên", "width": "20%" },
+                { title: "Ngày sinh" },
+                { title: "Giới tính" },
+                { title: "Ngày vào đoàn" },
+                { title: "Địa chỉ" },
+                { title: "Số điện thoại" },
+                { title: "Email" },
+                { title: "Nơi vào đoàn" },
+                { title: "MSSV" },
+                { title: "Xếp loại", visible: false },
+                { title: "Xếp loại" },
+                { title: "Nhận thức chính trị" },
+                { title: "Nghiệp vụ chuyên môn" },
+                { title: "Rèn luyện bản thân" },
+                { title: "Bí thư", visible: false },
+                { title: "Tác vụ" }
+
+            ],
+            "columnDefs": [{
+                "targets": -1,
+                "data": null,
+                "defaultContent": "<a id=" + "suact" + " data-toggle=" + "modal" + " data-target=" + "#EditData" + " >" + " <i class= " + "'fas fa-edit'" + " ></i>" + "<span> &ensp;</span></a>"
+                    + "<a id=" + "xoact" + " >" + " <i class= " + "'fas fa-trash-alt'" + " ></i> " + "</a> " + "<span> &ensp;</span></a>"
+
+            }],
+            "createdRow": function (row, data, dataIndex) {
+                if (data[10] >= 3) {
+                    $(row).addClass('greenclass');
+                }
+                if (data[10] == 2) {
+                    $(row).addClass('orangeclass');
+                }
+                if (data[10] == 1) {
+                    $(row).addClass('redclass');
+                }
+            }
+        });
+
+        $('#' + table_id + ' tbody').on('click', '#suact', function () {
+
+            var data = tabledt.row($(this).parents('tr')).data();
+            console.log(data)
+            $('#IDEdit').val(data[0]);
+            $('#HoTenEdit').val(data[1]);
+            //$('#NgaySinhEdit').val(data[2]);
+            $('#GioiTinhEdit').val(data[3]);
+            //$('#NgayVaoDoanEdit').val(data[4]);
+            $('#DiaChiEdit').val(data[5]);
+            $('#SoDienThoaiEdit').val(data[6]);
+            $('#EmailEdit').val(data[7]);
+            $('#NoiVaoDoanEdit').val(data[8]);
+            $('#MSSVEdit').val(data[9]);
+            $('#XepLoaiEdit').val(data[10]);
+            $('#NhanThucChinhTriEdit').val(data[12]);
+            $('#ChuyenMonNghiepVuEdit').val(data[13]);
+            $('#RenLuyenCaNhanEdit').val(data[14]);
+            if (data[15] == false) {
+                $("#BiThuEdit").prop("checked", false);
+            } else {
+                $("#BiThuEdit").prop("checked", true);
+            }
+
+            setngay(data[2], data[4])
+        });
+        $('#' + table_id + ' tbody').on('click', '#xoact', function () {
+            var data = tabledt.row($(this).parents('tr')).data();
+            var r = confirm("Bạn có muốn xóa toàn bộ thông tin của đoàn viên:" + data[1] + " có ID là: " + data[0])
+            if (r) {
+                Delete(data[0]);
+            }
+        });
+    };
+    function setngay(ns, nvd) {
+        var s = ns.split('/').join('-');
+        var t = nvd.split('/').join('-');
+        var date1 = s.split("-").reverse().join("-");
+        var date2 = t.split("-").reverse().join("-");
+        $("#NgaySinhEdit").val(date1);
+        $("#NgayVaoDoanEdit").val(date2);
+    }
+    function Add() {
+        var HoTen = $('#HoTenAdd').val();
+        var NgaySinh = $('#NgaySinhAdd').val();
+        var GioiTinh = $('#GioiTinhAdd').val();
+        var NgayVaoDoan = $('#NgayVaoDoanAdd').val();
+        var DiaChi = $('#DiaChiAdd').val();
+        var SoDienThoai = $('#SoDienThoaiAdd').val();
+        var Email = $('#EmailAdd').val();
+        var MSSV = $('#MSSVAdd').val();
+        var NoiVaoDoan = $('#NoiVaoDoanAdd').val();
+        var NhanThucChinhTri = $('#NhanThucChinhTriAdd').val();
+        var ChuyenMonNghiepVu = $('#ChuyenMonNghiepVuAdd').val();
+        var RenLuyenCaNhan = $('#RenLuyenCaNhanAdd').val();
+        var XepLoai = $('#XepLoaiAdd').val();
+        var BiThu = $("#BiThuAdd").is(":checked");
+        if (HoTen == "" || NgaySinh == "" || GioiTinh == "" || NgayVaoDoan == "" || DiaChi == "" || SoDienThoai == "" || Email == "" || NhanThucChinhTri == "" || ChuyenMonNghiepVu == "" || RenLuyenCaNhan == "") {
+            alert("Bạn cần nhập đầy đủ thông tin đoàn viên");
+        } else {
+            open_loading_screen();
+            $.ajax({
+                type: "POST",
+                url: "/Admin/DoanVien_Add",
+                dataType: "json",
+                data: {
+                    'MSSV': MSSV,
+                    'NoiVaoDoan': NoiVaoDoan,
+                    'XepLoai': XepLoai,
+                    'HoTen': HoTen,
+                    'NgaySinh': NgaySinh,
+                    'GioiTinh': GioiTinh,
+                    'NgayVaoDoan': NgayVaoDoan,
+                    'DiaChi': DiaChi,
+                    'SoDienThoai': SoDienThoai,
+                    'Email': Email,
+                    'NhanThucChinhTri': NhanThucChinhTri,
+                    'ChuyenMonNghiepVu': ChuyenMonNghiepVu,
+                    'RenLuyenCaNhan': RenLuyenCaNhan,
+                    'LaBiThu': BiThu,
+                },
+                success: function (data) {
+                    close_loading_screen();
+                    alert(data.Message);
+                    if (data.Status == 1) {
+                        ListAll();
+                        $('#AddData').modal('hide');
+                    }
+                },
+                error: function (err) {
+                    close_loading_screen();
+                    alert('Lỗi kết nối');
+
+                }
+            });
+        }
+    }
+    function Edit() {
+        var ID = $('#IDEdit').val();
+        var HoTen = $('#HoTenEdit').val();
+        var NgaySinh = $('#NgaySinhEdit').val();
+        var GioiTinh = $('#GioiTinhEdit').val();
+        var NgayVaoDoan = $('#NgayVaoDoanEdit').val();
+        var DiaChi = $('#DiaChiEdit').val();
+        var SoDienThoai = $('#SoDienThoaiEdit').val();
+        var Email = $('#EmailEdit').val();
+        var MSSV = $('#MSSVEdit').val();
+        var NoiVaoDoan = $('#NoiVaoDoanEdit').val();
+        var XepLoai = $('#XepLoaiEdit').val();
+        var NhanThucChinhTri = $('#NhanThucChinhTriEdit').val();
+        var ChuyenMonNghiepVu = $('#ChuyenMonNghiepVuEdit').val();
+        var RenLuyenCaNhan = $('#RenLuyenCaNhanEdit').val();
+        var BiThu = $("#BiThuEdit").is(":checked");
+        if (HoTen == "" || NgaySinh == "" || GioiTinh == "" || NgayVaoDoan == "" || DiaChi == "" || SoDienThoai == "" || Email == "" || NhanThucChinhTri == "" || ChuyenMonNghiepVu == "" || RenLuyenCaNhan == "") {
+            alert("Bạn cần nhập đầy đủ thông tin đoàn viên");
+        } else {
+            open_loading_screen();
+            $.ajax({
+                type: "POST",
+                url: "/Admin/DoanVien_Edit",
+                dataType: "json",
+                data: {
+                    'ID': ID,
+                    'HoTen': HoTen,
+                    'NgaySinh': NgaySinh,
+                    'GioiTinh': GioiTinh,
+                    'NgayVaoDoan': NgayVaoDoan,
+                    'DiaChi': DiaChi,
+                    'SoDienThoai': SoDienThoai,
+                    'Email': Email,
+                    'MSSV': MSSV,
+                    'NoiVaoDoan': NoiVaoDoan,
+                    'XepLoai': XepLoai,
+                    'HoTen': HoTen,
+                    'NhanThucChinhTri': NhanThucChinhTri,
+                    'ChuyenMonNghiepVu': ChuyenMonNghiepVu,
+                    'RenLuyenCaNhan': RenLuyenCaNhan,
+                    'LaBiThu': BiThu,
+                },
+                success: function (data) {
+                    close_loading_screen();
+                    alert(data.Message);
+                    if (data.Status == 1) {
+                        ListAll();
+                        $('#EditData').modal('hide');
+                    }
+                },
+                error: function (err) {
+                    close_loading_screen();
+                    alert('Lỗi kết nối');
+
+                }
+            });
+        }
+    }
+    function Delete(ID) {
+        open_loading_screen();
+        $.ajax({
+            type: "POST",
+            url: "/Admin/DoanVien_Delete",
+            dataType: "json",
+            data: {
+                'ID': ID
+            },
+            success: function (data) {
+                close_loading_screen();
+                alert(data.Message);
+                if (data.Status == 1) {
+                    ListAll();
+                }
+            },
+            error: function (err) {
+                close_loading_screen();
+                alert('Lỗi kết nối');
+
+            }
+        });
+    }
+    function Export() {
+        var r = confirm("File của bạn sẽ được tải xuống trong giây lát! \n Bạn có muốn tải xuống danh sách đoàn viên không?");
+        if (r) {
+            window.location.href = '/Admin/DoanVien_Export';
+        };
+    }
+    function Upload() {
+        var fileUpload = document.getElementById("fileUpload");
+        var regex = /^([a-zA-Z0-9\s_\\.\-:()])+(.xls|.xlsx)$/;
+        if (regex.test(fileUpload.value.toLowerCase())) {
+            if (typeof (FileReader) != "undefined") {
+                var reader = new FileReader();
+                if (reader.readAsBinaryString) {
+                    reader.onload = function (e) {
+                        ProcessExcel(e.target.result);
+                    };
+                    reader.readAsBinaryString(fileUpload.files[0]);
+                } else {
+                    reader.onload = function (e) {
+                        var data = "";
+                        var bytes = new Uint8Array(e.target.result);
+                        for (var i = 0; i < bytes.byteLength; i++) {
+                            data += String.fromCharCode(bytes[i]);
+                        }
+                        ProcessExcel(data);
+                    };
+                    reader.readAsArrayBuffer(fileUpload.files[0]);
+                }
+            } else {
+                alert("Trình duyệt không hỗ trợ");
+            }
+        } else {
+            alert("File không phải định dạng excel");
+        }
+    };
+    function ProcessExcel(data) {
+         open_loading_screen();
+        var workbook = XLSX.read(data, {
+            type: 'binary'
+        });
+        var firstSheet = workbook.SheetNames[0];
+        var excelRows = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[firstSheet]);
+        var values = { excelRows };
+        console.log(values);
+        var theIds = JSON.stringify(values);
+        $.ajax({
+            type: "POST",
+            url: "/Admin/ImportExcel",
+            //contentType: "application/json; charset=utf-8",
+            data: { input: theIds },
+            dataType: "json",
+            success: function (data) {
+                close_loading_screen();
+                alert(data.Message);
+                if (data.Status == 1) {
+                    ListAll();
+                }
+                $('#fileUpload').val('');
+            },
+            error: function (result) {
+                alert(result);
+            }
+        });
+    };
+    function clearr() {
+        $('#fileUpload').val('');
+    }
+</script>

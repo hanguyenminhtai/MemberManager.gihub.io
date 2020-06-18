@@ -1,0 +1,114 @@
+﻿
+@{
+    ViewBag.Title = "DeXuat";
+    Layout = "~/Views/Shared/_LayoutStudent.cshtml";
+}
+
+<section class="content">
+    <div class="row" style="">
+        <div class="form-group row">
+            <div class="col-md-12">
+                <div class="box box-solid box-primary">
+                    <div class="box-header with-border ">
+                        <h3 class="box-title" style="margin-left:45%">Thông tin đề xuất</h3>
+                        <div class="box-tools pull-right">
+                            <!-- Collapse Button -->
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                <i class="fa fa-minus"></i>
+                            </button>
+                        </div>
+                        <!-- /.box-tools -->
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body ">
+                        <form role="form">
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label>Đoàn viên</label>
+                                    <select class="form-control" id="DoanVien"></select>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Loại đề xuất</label>
+                                        <select class="form-control" id="Loai">
+                                            <option value="1" selected>Lớp nhận thức đảng</option>
+                                            <option value="2">Làm theo lời Bác</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-12">
+                                    <label>Nội dung đề xuất</label>
+                                    <textarea style="width:100%" rows="5" id="NoiDung"></textarea>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="center-block" style="text-align: center">
+        <button class="btn btn-danger" onclick="Send()">Gửi đề xuất</button>
+    </div>
+</section>
+<script src="/Content/bower_components/jquery/dist/jquery.min.js"></script>
+<script>
+    function khoitao() {
+
+    }
+    $(document).ready(function () {
+        Load_thong_tin();
+    });
+    var ID;
+    function Load_thong_tin() {
+        $.ajax({
+            type: "GET",
+            url: "/Student/DoanVien_GetAll",
+            dataType: "json",
+            success: function (dt) {
+                var html = '';
+                html += '<option value="0">Vui lòng chọn</option>';
+                if (dt.length > 0) {
+                    for (var k in dt) {
+                        html += '<option value="' + dt[k].ID + '">' + dt[k].MSSV + '</option>';
+                    };
+                } else {
+                    html += '<option value="0"> Không có dữ liệu </option>';
+                }
+                $('#DoanVien').html(html);
+            },
+            complete: function (data) {
+
+            },
+            error: function (err) {
+            }
+        });
+    }
+
+    function Send() {
+        if ($('#DoanVien').val() == "" ||$('#NoiDung').val()=="") {
+            alert("Vui lòng chọn đoàn viên và nội dung đề xuất");
+        } else {
+            $.ajax({
+                type: "POST",
+                url: "/Student/DeXuatDV",
+                dataType: "json",
+                data: {
+                    IDDoanVien: $('#DoanVien').val(),
+                    Loai: $('#Loai').val(),
+                    NoiDung:$('#NoiDung').val()
+                },
+                success: function (dt) {
+                    alert(dt.Message)
+                },
+                complete: function (data) {
+
+                },
+                error: function (err) {
+                }
+            });
+        }
+    }
+</script>

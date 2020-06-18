@@ -1,0 +1,346 @@
+﻿
+@{
+    ViewBag.Title = "TraCuu";
+    Layout = "~/Views/Shared/_LayoutStudent.cshtml";
+}
+
+    <section class="content">
+
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item active" aria-current="page">Tra cứu sự kiện</li>
+            </ol>
+        </nav>
+        <div class="box">
+            <div class="box-body">
+                <button onclick="Huy()" class="btn btn-warning" style="float:right ; margin-top: 18px; margin-right:18px; margin-bottom:6px"><i class="far fa-window-close"></i> Hủy đăng ký</button>
+                <button id="btnTraCuu" data-toggle="modal" data-target="#TraCuu" class="btn btn-primary" style="float:right ; margin-top: 18px; margin-right:18px; margin-bottom:6px"><i class="fas fa-search"></i> Tra cứu</button>
+                <button onclick="XacNhan()" class="btn btn-primary" style="float:right ; margin-top: 18px; margin-right:18px; margin-bottom:6px"><i class="fas fa-check"></i> Đăng ký tham gia sự kiện</button>
+                <table id="maintable" class="table table-striped table-hover" style="width:100%;z-index: -1"></table>
+            </div>
+        </div>
+        <div class="modal" style="width:100%" data-backdrop="static" data-keyboard="false" id="TraCuu">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Danh sách đoàn viên đăng ký</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        <table id="TraCuuTable" class="table table-striped table-hover" style="width:100%;z-index: -1"></table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal" data-backdrop="static" data-keyboard="false" id="ViewSuKien">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Thông tin sự kiện</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        <form>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label>ID sự kiện</label>
+                                    <input type="text" readonly class="form-control" id="ID">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>Tên sự kiện</label>
+                                    <input type="text" readonly class="form-control" id="TenSuKien">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="DaNhan">Thời gian bắt đầu</label>
+                                    <textarea readonly class="form-control" id="BatDau"> </textarea>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="MoTa">Địa điểm</label>
+                                    <input type="text" readonly class="form-control" id="DiaDiem">
+                                </div>
+                            </div>
+                            <div class="form-row">
+
+                                <div class="form-group col-md-12">
+                                    <label for="DaNhan">Ghi chú</label>
+                                    <textarea readonly class="form-control" id="GhiChu"> </textarea>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label for="MoTa">Nội dung</label>
+                                    <div id="NoiDung">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+<script src="/Content/bower_components/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="/Content/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- DataTables -->
+<script src="/Content/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="/Content/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<!-- SlimScroll -->
+<script src="/Content/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+<!-- FastClick -->
+<script src="/Content/bower_components/fastclick/lib/fastclick.js"></script>
+<script src="/Content/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script>
+    var DangKys;
+    var SanPham;
+    var selectedid
+    var tabledt;
+    function ListAll() {
+        $.ajax({
+            type: "GET",
+            url: "/Student/GetAllSuKien",
+            dataType: "json",
+            success: function (dt) {
+                console.log(dt)
+                document.getElementById("maintable").innerHTML = "";
+                DangKys = dt;
+                filldata('maintable', DangKys);
+            },
+            complete: function (data) {
+
+            },
+            error: function (err) {
+            }
+        });
+
+    }
+    $(document).ready(function () {
+        ListAll();
+    });
+    var IDSuKien = 0;
+    function filldata(table_id, data) {
+        var dataSet = new Array;
+        $.each(data,
+            function (index, value) {
+                var tempArray = new Array;
+                for (var o in value) {
+                    tempArray.push(value[o]);
+                }
+                dataSet.push(tempArray);
+            });
+         tabledt = $('#' + table_id + '').removeAttr('width').DataTable({
+            select: true,
+            "destroy": true,
+            data: dataSet,
+
+            "oLanguage": {
+
+                "sProcessing": "Đang xử lý...",
+                "sLengthMenu": "Xem _MENU_ mục",
+                "sZeroRecords": "Không tìm thấy dòng nào phù hợp",
+                "sInfo": "Đang xem _START_ đến _END_ trong tổng số _TOTAL_ mục",
+                "sInfoEmpty": "Đang xem 0 đến 0 trong tổng số 0 mục",
+                "sInfoFiltered": "(được lọc từ _MAX_ mục)",
+                "sInfoPostFix": "",
+                "sSearch": "Tìm:",
+                "sUrl": "",
+                "oPaginate": {
+                    "sFirst": "Đầu",
+                    "sPrevious": "Trước",
+                    "sNext": "Tiếp",
+                    "sLast": "Cuối"
+
+                }
+            },
+            columns: [
+                { title: "ID sự kiện" },
+                { title: "Tên sự kiện" },
+                { title: "Nội dung", visible: false },
+                { title: "Địa điểm" },
+                { title: "Ngày bắt đầu" },
+                { title: "Ghi chú" },
+                { title: "Trạng thái", visible: false },
+                { title: "Trạng thái" },
+                { title: "Tác vụ" },
+                //{ title: "Tài khoản sửa", "visible": false },
+                //{ title: "Ngày sửa", "visible": false },
+
+             ],
+            "columnDefs": [{
+                "targets": -1,
+                "data": null,
+                "defaultContent": "<a id=" + "viewct" + " data-toggle=" + "modal" + " data-target=" + "#ViewSuKien" + ">" + "<i class=" + "'fas fa-eye'" + "></i>" + "<span> &ensp;</span></a>"
+            }],
+            "order": [[0, "desc"]]
+         });
+        $('#' + table_id + ' tbody').on('click', '#viewct', function () {
+            var data = tabledt.row($(this).parents('tr')).data();
+            $('#ID').val(data[0]);
+            $('#NoiDung').html(data[2]);
+            $('#TenSuKien').val(data[1]);
+            $('#DiaDiem').val(data[3]);
+            $('#BatDau').val(data[4]);
+            $('#GhiChu').val(data[5]);
+        });
+        $('#maintable tbody').on('click', 'tr', function () {
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+
+            }
+            else {
+                tabledt.$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+            }
+        });
+
+    };
+    function XacNhan() {
+        var data = tabledt.row('.selected').data();
+        var r = confirm("Bạn có muốn đăng ký tham gia sự kiện không?")
+        if (r) {
+            open_loading_screen();
+            $.ajax({
+                type: "POST",
+                url: "/Student/DangKySuKien",
+                dataType: "json",
+                data: {
+                    'IDSuKien': data[0]
+                },
+                success: function (data) {
+                    close_loading_screen();
+
+                    if (data) {
+                        alert("Bạn đã đăng ký tham gia gia sự kiện thành công");
+                        ListAll();
+                    } else {
+                        alert("Bạn đã đăng ký tham gia gia sự kiện trước đó");
+                    }
+                },
+                error: function (err) {
+                    close_loading_screen();
+                    alert('Lỗi kết nối');
+                }
+            });
+        }
+
+    };
+    function Huy() {
+        var data = tabledt.row('.selected').data();
+        console.log(data)
+        var r = confirm("Bạn có muốn hủy bỏ đăng ký tham gia sự kiện này không?")
+        if (r) {
+            open_loading_screen();
+            $.ajax({
+                type: "POST",
+                url: "/Student/HuyDangKySuKien",
+                dataType: "json",
+                data: {
+                    'IDSuKien': data[0]
+                },
+                success: function (data) {
+                    close_loading_screen();
+
+                    if (data) {
+                        alert("Đã hủy đăng ký tham gia");
+                        ListAll();
+                    }
+                    else {
+                        alert("Đã hủy đăng ký tham gia");
+                    }
+                },
+                error: function (err) {
+                    close_loading_screen();
+                    alert('Lỗi kết nối');
+                }
+            });
+        }
+
+    };
+    $('#btnTraCuu').click(function () {
+        var data = tabledt.row('.selected').data();
+        console.log(data)
+        TraCuu(data[0]);
+
+    });
+    function TraCuu(ID) {
+        $.ajax({
+            type: "POST",
+            url: "/Student/TraCuuDanhSach",
+            dataType: "json",
+            data: {
+                'ID': ID
+            },
+            success: function (data) {
+                console.log(data)
+                fillTraCuu("TraCuuTable", data)
+            },
+            error: function (err) {
+                alert('Lỗi kết nối');
+
+            }
+        });
+    }
+    function fillTraCuu(table_id, data) {
+        var dataSet = new Array;
+        $.each(data,
+            function (index, value) {
+                var tempArray = new Array;
+                for (var o in value) {
+                    tempArray.push(value[o]);
+                }
+                dataSet.push(tempArray);
+            });
+        var tabletc = $('#' + table_id + '').removeAttr('width').DataTable({
+            select: true,
+            "destroy": true,
+            data: dataSet,
+
+            "oLanguage": {
+
+                "sProcessing": "Đang xử lý...",
+                "sLengthMenu": "Xem _MENU_ mục",
+                "sZeroRecords": "Không có dữ liệu",
+                "sInfo": "Đang xem _START_ đến _END_ trong tổng số _TOTAL_ mục",
+                "sInfoEmpty": "Đang xem 0 đến 0 trong tổng số 0 mục",
+                "sInfoFiltered": "(được lọc từ _MAX_ mục)",
+                "sInfoPostFix": "",
+                "sSearch": "Tìm:",
+                "sUrl": "",
+                "oPaginate": {
+                    "sFirst": "Đầu",
+                    "sPrevious": "Trước",
+                    "sNext": "Tiếp",
+                    "sLast": "Cuối"
+
+                }
+            },
+            columns: [
+                { title: "ID" },
+                { title: "Họ tên" },
+                { title: "Ngày sinh" },
+                { title: "Giới tính" },
+                { title: "Ngày vào đoàn" },
+                { title: "Địa chỉ" },
+                { title: "Số điện thoại" },
+                { title: "Email" }
+
+            ],
+        })
+    };
+</script>
